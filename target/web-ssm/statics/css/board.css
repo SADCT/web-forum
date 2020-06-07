@@ -1,0 +1,16 @@
+/* 板块 */
+.chunk{margin: 10px auto 0;width: 1200px;color: #444;}
+table{width: 100%; border-collapse: collapse;}
+.chunk table{border: 1px solid #e9e9e9;border-top:3px solid #fff7ff;}
+.chunk th{text-align: left;padding: 0 20px;background-color: #f7f7f7;line-height: 42px;border-bottom: 1px solid #e9e9e9;color: #666;}
+.chunk td{border-bottom: 1px solid #e9e9e9;font-size: 12px; padding: 15px 20px;}
+.chunk tr:hover{background-color: #f7f7f7;}
+.chunk a,.chunk .num var,.recommend-bbs a,.hot-model .tab-title .selected{color: #0f5489;}
+.chunk .name a{font-size: 14px;font-weight: bold;}
+.chunk .name .notabs{font-weight:normal;font-size:12px;}
+.chunk .name{padding: 0;background: url(https://s.kcimg.cn/bbs/static/image/tag.png) no-repeat 25px ;font-size: 14px;}
+.chunk .name p{font-size: 12px;color: #999; padding: 10px 0 10px 50px;margin-left: 20px;}
+.chunk .name var{color: #f60;}
+.chunk .title,.chunk .title a{font-size: 12px;color: #999;}
+
+.chunk .num{ color: #999;}

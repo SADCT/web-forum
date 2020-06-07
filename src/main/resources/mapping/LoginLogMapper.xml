@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.LoginLogMapper" >
+  <resultMap id="BaseResultMap" type="model.LoginLog" >
+    <id column="login_log_id" property="loginLogId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="login_datetime" property="loginDatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    login_log_id, user_id, ip, login_datetime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_login_log
+    where login_log_id = #{loginLogId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_login_log
+    where login_log_id = #{loginLogId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.LoginLog" >
+    insert into t_login_log (login_log_id, user_id, ip, 
+      login_datetime)
+    values (#{loginLogId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, 
+      #{loginDatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="model.LoginLog" >
+    insert into t_login_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="loginLogId != null" >
+        login_log_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="loginDatetime != null" >
+        login_datetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="loginLogId != null" >
+        #{loginLogId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDatetime != null" >
+        #{loginDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.LoginLog" >
+    update t_login_log
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDatetime != null" >
+        login_datetime = #{loginDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where login_log_id = #{loginLogId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.LoginLog" >
+    update t_login_log
+    set user_id = #{userId,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=VARCHAR},
+      login_datetime = #{loginDatetime,jdbcType=TIMESTAMP}
+    where login_log_id = #{loginLogId,jdbcType=INTEGER}
+  </update>
+</mapper>

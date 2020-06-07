@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.BoardManagerMapper" >
+  <resultMap id="BaseResultMap" type="model.BoardManagerKey" >
+    <id column="board_id" property="boardId" jdbcType="INTEGER" />
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="model.BoardManagerKey" >
+    delete from t_board_manager
+    where board_id = #{boardId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.BoardManagerKey" >
+    insert into t_board_manager (board_id, user_id)
+    values (#{boardId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="model.BoardManagerKey" >
+    insert into t_board_manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="boardId != null" >
+        board_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="boardId != null" >
+        #{boardId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

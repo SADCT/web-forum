@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.PostMapper" >
+  <resultMap id="BaseResultMap" type="model.Post" >
+    <id column="post_id" property="postId" jdbcType="INTEGER" />
+    <result column="board_id" property="boardId" jdbcType="INTEGER" />
+    <result column="topic_id" property="topicId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="post_type" property="postType" jdbcType="TINYINT" />
+    <result column="post_title" property="postTitle" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="model.Post" extends="BaseResultMap" >
+    <result column="post_text" property="postText" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    post_id, board_id, topic_id, user_id, post_type, post_title, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    post_text
+  </sql>
+  <select id="selectByTopicId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select
+        *
+        from t_post
+    where topic_id=#{topicId}
+  </select>
+  <select id="getHostTopicInnerText" resultMap="ResultMapWithBLOBs" resultType="model.Post">
+    select
+    *
+    from t_post
+    where topic_id=#{0} and user_id=#{1} and post_type=1
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_post
+    where post_id = #{postId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_post
+    where post_id = #{postId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.Post" >
+    insert into t_post (post_id, board_id, topic_id, 
+      user_id, post_type, post_title, 
+      create_time, post_text)
+    values (#{postId,jdbcType=INTEGER}, #{boardId,jdbcType=INTEGER}, #{topicId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{postType,jdbcType=TINYINT}, #{postTitle,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE}, #{postText,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.Post" >
+    insert into t_post
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="postId != null" >
+        post_id,
+      </if>
+      <if test="boardId != null" >
+        board_id,
+      </if>
+      <if test="topicId != null" >
+        topic_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="postType != null" >
+        post_type,
+      </if>
+      <if test
+                  ="postTitle != null" >
+        post_title,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="postText != null" >
+        post_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="postId != null" >
+        #{postId,jdbcType=INTEGER},
+      </if>
+      <if test="boardId != null" >
+        #{boardId,jdbcType=INTEGER},
+      </if>
+      <if test="topicId != null" >
+        #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="postType != null" >
+        #{postType,jdbcType=TINYINT},
+      </if>
+      <if test="postTitle != null" >
+        #{postTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="postText != null" >
+        #{postText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.Post" >
+    update t_post
+    <set >
+      <if test="boardId != null" >
+        board_id = #{boardId,jdbcType=INTEGER},
+      </if>
+      <if test="topicId != null" >
+        topic_id = #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="postType != null" >
+        post_type = #{postType,jdbcType=TINYINT},
+      </if>
+      <if test="postTitle != null" >
+        post_title = #{postTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="postText != null" >
+        post_text = #{postText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where post_id = #{postId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.Post" >
+    update t_post
+    set board_id = #{boardId,jdbcType=INTEGER},
+      topic_id = #{topicId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      post_type = #{postType,jdbcType=TINYINT},
+      post_title = #{postTitle,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE},
+      post_text = #{postText,jdbcType=LONGVARCHAR}
+    where post_id = #{postId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.Post" >
+    update t_post
+    set board_id = #{boardId,jdbcType=INTEGER},
+      topic_id = #{topicId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      post_type = #{postType,jdbcType=TINYINT},
+      post_title = #{postTitle,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE}
+    where post_id = #{postId,jdbcType=INTEGER}
+  </update>
+</mapper>

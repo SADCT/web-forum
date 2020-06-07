@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.UserDetailedMapper" >
+  <resultMap id="BaseResultMap" type="model.UserDetailed" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
+    <result column="e_mail" property="eMail" jdbcType="VARCHAR" />
+    <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="user_signature" property="userSignature" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="sign_time" property="signTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMap1" type="model.RecentUser">
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMap2" type="model.AdminUser">
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <id column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, image_path, e_mail, phone_number, user_signature, sex, sign_time
+  </sql>
+
+  <select id="getAllManager" resultMap="ResultMap2">
+    SELECT t_user.user_id,t_user.user_type,t_user.user_name,t_user_detailed.image_path
+    from t_user,t_user_detailed
+    where t_user.user_type=2 and t_user.user_id = t_user_detailed.user_id
+    order by t_user_detailed.sign_time desc
+  </select>
+
+  <select id="RecentUserData" resultMap="ResultMap1">
+    SELECT t_user.user_id,t_user.user_name,t_user_detailed.image_path
+    from t_user,t_user_detailed
+    where t_user.user_id = t_user_detailed.user_id
+    order by t_user_detailed.sign_time desc
+    limit 9
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user_detailed
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_detailed
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.UserDetailed" >
+    insert into t_user_detailed (user_id, image_path, e_mail, 
+      phone_number, user_signature, sex, 
+      sign_time)
+    values (#{userId,jdbcType=INTEGER}, #{imagePath,jdbcType=VARCHAR}, #{eMail,jdbcType=VARCHAR}, 
+      #{phoneNumber,jdbcType=VARCHAR}, #{userSignature,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{signTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="model.UserDetailed" >
+    insert into t_user_detailed
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="imagePath != null" >
+        image_path,
+      </if>
+      <if test="eMail != null" >
+        e_mail,
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number,
+      </if>
+      <if test="userSignature != null" >
+        user_signature,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="signTime != null" >
+        sign_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="imagePath != null" >
+        #{imagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="eMail != null" >
+        #{eMail,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userSignature != null" >
+        #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null" >
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.UserDetailed" >
+    update t_user_detailed
+    <set >
+      <if test="imagePath != null" >
+        image_path = #{imagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="eMail != null" >
+        e_mail = #{eMail,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userSignature != null" >
+        user_signature = #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null" >
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.UserDetailed" >
+    update t_user_detailed
+    set image_path = #{imagePath,jdbcType=VARCHAR},
+      e_mail = #{eMail,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      user_signature = #{userSignature,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      sign_time = #{signTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

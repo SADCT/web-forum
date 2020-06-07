@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="model.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="TINYINT" />
+    <result column="locked" property="locked" jdbcType="TINYINT" />
+    <result column="credit" property="credit" jdbcType="INTEGER" />
+    <result column="last_visit" property="lastVisit" jdbcType="TIMESTAMP" />
+    <result column="last_ip" property="lastIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id,user_name, password, user_type, locked, credit, last_visit, last_ip
+  </sql>
+  <select id="findUserTotalNum" resultType="java.lang.Integer">
+    SELECT count(user_id)
+    FROM t_user;
+  </select>
+  <select id="selectunlockeruser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where t_user.locked=0 and user_type = 1
+  </select>
+  <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_name=#{username}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.User" >
+    insert into t_user (user_id, user_name, password, 
+      user_type, locked, credit, 
+      last_visit, last_ip)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=TINYINT}, #{locked,jdbcType=TINYINT}, #{credit,jdbcType=INTEGER}, 
+      #{lastVisit,jdbcType=TIMESTAMP}, #{lastIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.User" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="locked != null" >
+        locked,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="lastVisit != null" >
+        last_visit,
+      </if>
+      <if test="lastIp != null" >
+        last_ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="locked != null" >
+        #{locked,jdbcType=TINYINT},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="lastVisit != null" >
+        #{lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastIp != null" >
+        #{lastIp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.User" >
+    update t_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=TINYINT},
+      </if>
+      <if test="locked != null" >
+        locked = #{locked,jdbcType=TINYINT},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="lastVisit != null" >
+        last_visit = #{lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastIp != null" >
+        last_ip = #{lastIp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.User" >
+    update t_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=TINYINT},
+      locked = #{locked,jdbcType=TINYINT},
+      credit = #{credit,jdbcType=INTEGER},
+      last_visit = #{lastVisit,jdbcType=TIMESTAMP},
+      last_ip = #{lastIp,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <update id="changetoManager" parameterType="model.User" >
+    update t_user
+    set
+        user_type = 2
+
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

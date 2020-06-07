@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.ApplicationMapper" >
+    <resultMap id="BaseResultMap" type="model.Application" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="application_reason" property="applicationReason" jdbcType="VARCHAR" />
+        <result column="isPass" property="isPass" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+     user_id,application_reason,isPass
+  </sql>
+    <select id="selectAllApplication" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from t_application
+        where isPass= #{isPass,jdbcType=INTEGER}
+    </select>
+    <insert id="insert" parameterType="model.Application" >
+    insert into t_Application (user_id, application_reason, isPass)
+    values (#{userId,jdbcType=INTEGER},
+    #{applicationReason,jdbcType=VARCHAR},
+     #{isPass,jdbcType=INTEGER}
+      )
+  </insert>
+
+    <update id="updateByPrimaryKey" parameterType="model.Application" >
+    update t_application
+    set isPass = #{isPass,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>
